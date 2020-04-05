@@ -99,26 +99,27 @@ function generatePassword() {
   based on length and character sets, create password
 */
 function buildPassword( len, sets) {
-  let charSet = "";
-  if (sets.charAt(0) === 'Y') {
-    charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const charSets = [
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
+    "abcdefghijklmnopqrstuvwxyz",
+    "0123456789",
+    "!@#$%&[]{}|<>/?"
+  ];
+
+  let selectorStr = "";
+  for (let i = 0; i < 4; i++) { //already validated there are only 4 characters
+    if (sets.charAt(i) === 'Y') {
+      selectorStr += charSets[i];
+    }
   }
-  if (sets.charAt(1) === 'Y') {
-    charSet += "abcdefghijklmnopqrstuvwxyz";
-  }
-  if (sets.charAt(2) === 'Y') {
-    charSet += "0123456789";
-  }
-  if (sets.charAt(3) === 'Y') {
-    charSet += "!@#$%&[]{}|<>/?";
-  }
-  console.log("charSet = "+charSet);
+
+  console.log("charSet = "+selectorStr);
   let password = "";
   for (let i = 0; i < len; i++) {
     // get random number for index into charSet
-    let index = Math.floor(Math.random(charSet.length) * charSet.length);
+    let index = Math.floor(Math.random(selectorStr.length) * selectorStr.length);
     console.log("index = "+index);
-    password += charSet.charAt(index);
+    password += selectorStr.charAt(index);
   }
 
   return password;
