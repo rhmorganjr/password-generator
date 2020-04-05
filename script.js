@@ -69,30 +69,50 @@ function getCharacterSets() {
     "\n\n" +
     "Enter as 4 characters (ie:yyny or ynyn) and must enter 4 letters!");
 
-    return characterSet.toUpperCase();
+    return characterSet;
 }
 /*
   Generate the password
 */
 function generatePassword() {
+  let keepGoing = true;
 
   // retrieve length 8 to 128
-  let passwordLen = getPasswordLength();
-  while (!isPasswordLenValid(passwordLen)) {
-    passwordLen = getPasswordLength();
+  var passwordLen = getPasswordLength();
+  if (passwordLen === null) {
+    keepGoing = false;         // cancel selected
+  }
+  else {
+    while (!isPasswordLenValid(passwordLen)) {
+      passwordLen = getPasswordLength();
+      if (passwordLen === null) {
+        keepGoing = false;
+        break;
+      }
+    }
   }
   console.log("passwordLen = "+ passwordLen);
 
   // retrieve characters types
-  let characterSets = getCharacterSets();
-  while (!isCharacterSetValid(characterSets)) {
-    characterSets = getCharacterSets();
+  if (keepGoing) {
+    var characterSets = getCharacterSets();
+    if (characterSets === null) {
+      keepGoing = false;         // cancel selected
+    }
+    else {
+      while (!isCharacterSetValid(characterSets)) {
+        characterSets = getCharacterSets();
+      }
+    }
   }
 
   // Build character string based on sets
-  let generatedPassword = buildPassword(passwordLen, characterSets);
-
-  return generatedPassword;
+  if (keepGoing) {
+    return buildPassword(passwordLen, characterSets);
+  }
+  else {
+    return "Cancelled password generation";
+  }
 }
 
 /*
@@ -108,7 +128,7 @@ function buildPassword( len, sets) {
 
   let selectorStr = "";
   for (let i = 0; i < 4; i++) { //already validated there are only 4 characters
-    if (sets.charAt(i) === 'Y') {
+    if (sets.charAt(i).toUpperCase() === 'Y') {
       selectorStr += charSets[i];
     }
   }
