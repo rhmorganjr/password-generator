@@ -91,7 +91,6 @@ function generatePassword() {
       }
     }
   }
-  console.log("passwordLen = "+ passwordLen);
 
   // retrieve characters types
   if (keepGoing) {
@@ -133,12 +132,10 @@ function buildPassword( len, sets) {
     }
   }
 
-  console.log("charSet = "+selectorStr);
   let password = "";
   for (let i = 0; i < len; i++) {
     // get random number for index into charSet
     let index = Math.floor(Math.random(selectorStr.length) * selectorStr.length);
-    console.log("index = "+index);
     password += selectorStr.charAt(index);
   }
 
